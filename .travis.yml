@@ -4,36 +4,33 @@ language: cpp
 
 cache:
   directories:
-    - $HOME/.ccache
-    - $HOME/.cache/pip
-    - $HOME/.mxnet
-    - $HOME/Library/Caches/Homebrew
+    #- $HOME/.ccache
+    #- $HOME/.cache/pip
+    #- $HOME/.mxnet
+    #- $HOME/Library/Caches/Homebrew
 
 os:
-  - osx
-
-osx_image: xcode9.4
-
-matrix:
-  include:
-    - os: osx
+  - os: windows
 
 before_install:
   - export PYTHONPATH=${PYTHONPATH}:${PWD}/python
 
 install:
-  - HOMEBREW_NO_AUTO_UPDATE=1 brew install ccache
-  - export PATH="/usr/local/opt/ccache/libexec:$PATH"
-  - source ci/travis/install.sh
+  #- HOMEBREW_NO_AUTO_UPDATE=1 brew install ccache
+  #- export PATH="/usr/local/opt/ccache/libexec:$PATH"
+  #- source ci/travis/install.sh
+  - choco install python3 -y
+  - python3 --version
+  - pip
 
 # We build with 2 concurrent jobs to match the number of cores present on MacOS virutal machines.
 # nproc does not report the correct number of cores reliably in Travis, so using nproc is not
 # recommended.
 # https://docs.travis-ci.com/user/reference/overview/
 script:
-  - export MXNET_STORAGE_FALLBACK_LOG_VERBOSE=0
-  - mv make/osx.mk config.mk
-  - make -j 2
+  #- export MXNET_STORAGE_FALLBACK_LOG_VERBOSE=0
+  #- mv make/osx.mk config.mk
+  #- make -j 2
 
   # Temporarily disabled due to https://github.com/apache/incubator-mxnet/issues/13136
   # We ignore several tests to avoid possible timeouts on large PRs.
